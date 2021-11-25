@@ -11,7 +11,7 @@
 
     <ion-content color="dark" :fullscreen="true">
       <ion-item color="dark">
-        <ion-label position="floating" color="primary">Search</ion-label>
+        <ion-label position="floating" color="primary">Type a song, artist or album name</ion-label>
         <ion-input
             @input="term = $event.target.value"
             :value="term"

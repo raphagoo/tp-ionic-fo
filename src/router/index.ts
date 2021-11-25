@@ -23,6 +23,20 @@ const routes: Array<RouteRecordRaw> = [
     path: '/detail/:songId',
     name: 'Detail',
     component: Detail
+  },
+  {
+    path: "/logout",
+    name: "logout",
+    component: {
+      beforeRouteEnter(to, from, next) {
+        console.log({from});
+        if (!from) {
+          console.log("no from");
+        }
+        sessionStorage.removeItem('user');
+        next('/');
+      }
+    }
   }
 ]
 

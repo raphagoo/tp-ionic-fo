@@ -1,10 +1,10 @@
 import api from '../interfaces/apiInterface';
-import { default as log } from '../interfaces/consoleLogger'
+import { default as log } from '../interfaces/consoleLogger';
 import {Dispatch, Commit} from 'vuex';
 
-type stateType = {search: {}}
+type stateType = {search: {}; song: {}; loading: boolean};
 
-const state = {search: {}}
+const state = {search: {}, song: {}, loading: true};
 
 const actions = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -24,16 +24,43 @@ const actions = {
                 );
         })
     },
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    getSong({dispatch, commit}: {dispatch: Dispatch; commit: Commit}, songId: number){
+        return new Promise((resolve, reject) => {
+            commit('songRequest', songId);
+            api.get('/songs/' + songId, { headers:{"Content-Type": "application/json"}})
+                .then(
+                    response => {
+                        commit('songSuccess', response.data);
+                        resolve(response);
+                    },
+                    error => {
+                        log.info('Erreur : ', error);
+                        reject(error);
+                    }
+                );
+        })
+    },
 }
 
 
 const mutations = {
     searchRequest(){
-        log.info('account.module.search.request')
+        log.info('account.module.search.request');
     },
     searchSuccess(state: stateType, data: any){
-        log.info('account.module.search.success')
-        state.search = data.response
+        log.info('account.module.search.success');
+        state.search = data.response;
+    },
+    songRequest(){
+        log.info('account.module.song.request');
+    },
+    songSuccess(state: stateType, data: any){
+        log.info(data)
+        log.info('account.module.song.success');
+        state.song = data;
+        state.loading = false;
     }
 }
 

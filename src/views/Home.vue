@@ -8,10 +8,10 @@
         <ion-title>Home</ion-title>
       </ion-toolbar>
     </ion-header>
-    
+
     <ion-content color="dark" :fullscreen="true">
         <form novalidate>
-            <ion-item>
+            <ion-item color="dark">
               <ion-label position="floating" color="primary">Username</ion-label>
               <ion-input
                   @input="credentials.username = $event.target.value"
@@ -21,7 +21,7 @@
                   autocapitalize="off"
               ></ion-input>
             </ion-item>
-            <ion-item>
+            <ion-item color="dark">
               <ion-label position="floating" color="primary">Password</ion-label>
               <ion-input
                   @input="credentials.password = $event.target.value"
