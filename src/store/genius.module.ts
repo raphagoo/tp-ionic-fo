@@ -57,7 +57,6 @@ const mutations = {
         log.info('account.module.song.request');
     },
     songSuccess(state: stateType, data: any){
-        log.info(data)
         log.info('account.module.song.success');
         state.song = data;
         state.loading = false;

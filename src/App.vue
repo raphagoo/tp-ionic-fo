@@ -5,8 +5,7 @@
         <ion-list v-if="account.user !== null" class="inbox-list">
           <ion-list-header class="menu-username">{{account.user.username}}</ion-list-header>
           <ion-note>Number of songs liked : {{account.user.likes.length}}</ion-note>
-
-          <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
+          <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPagesLogged" :key="i">
             <ion-item color="dark" @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
               <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
@@ -14,11 +13,10 @@
           </ion-menu-toggle>
         </ion-list>
         <ion-list v-else class="inbox-list">
-          <ion-list-header>Inbox</ion-list-header>
-          <ion-note>hi@ionicframework.com</ion-note>
+          <ion-list-header class="menu-username">Welcome</ion-list-header>
 
           <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
-            <ion-item @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
+            <ion-item color="dark" @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
               <ion-icon slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
@@ -34,7 +32,7 @@
 import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet} from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { logInOutline, logInSharp, logOutOutline, logOutSharp, heartOutline, heartSharp, searchOutline, searchSharp, personCircleOutline, personCircleSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import {mapState} from "vuex";
 
 
@@ -60,18 +58,18 @@ export default defineComponent({
   },
   setup() {
     const selectedIndex = ref(0);
-    const appPages = [
+    const appPagesLogged = [
       {
         title: 'Search',
         url: '/search',
-        iosIcon: mailOutline,
-        mdIcon: mailSharp
+        iosIcon: searchOutline,
+        mdIcon: searchSharp
       },
       {
         title: 'Profile',
         url: '/profile',
-        iosIcon: paperPlaneOutline,
-        mdIcon: paperPlaneSharp
+        iosIcon: personCircleOutline,
+        mdIcon: personCircleSharp
       },
       {
         title: 'Liked',
@@ -82,8 +80,23 @@ export default defineComponent({
       {
         title: 'Logout',
         url: '/logout',
-        iosIcon: archiveOutline,
-        mdIcon: archiveSharp
+        iosIcon: logOutOutline,
+        mdIcon: logOutSharp
+      }
+    ];
+
+    const appPages = [
+      {
+        title: 'Login',
+        url: '/login',
+        iosIcon: logInOutline,
+        mdIcon: logInSharp
+      },
+      {
+        title: 'Search',
+        url: '/search',
+        iosIcon: searchOutline,
+        mdIcon: searchSharp
       }
     ];
 
@@ -92,16 +105,17 @@ export default defineComponent({
     return {
       selectedIndex,
       appPages,
-      archiveOutline,
-      archiveSharp,
-      bookmarkOutline,
-      bookmarkSharp,
+      appPagesLogged,
+      logInOutline,
+      logInSharp,
+      logOutOutline,
+      logOutSharp,
       heartOutline,
       heartSharp,
-      mailOutline,
-      mailSharp,
-      paperPlaneOutline,
-      paperPlaneSharp,
+      searchOutline,
+      searchSharp,
+      personCircleOutline,
+      personCircleSharp,
       trashOutline,
       trashSharp,
       warningOutline,

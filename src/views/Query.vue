@@ -22,11 +22,11 @@
       </ion-item>
       <ion-button @click="doSearch(term)" color="secondary" expand="full">Search</ion-button>
       <ion-list color="dark" v-if="results">
-        <ion-item @click="toDetail(hit.result.id)" color="dark" v-for="hit in results.hits" :key="hit.result.id">
+        <ion-item class="item-song" @click="toDetail(hit.result.id)" color="dark" v-for="hit in results.hits" :key="hit.result.id">
           <ion-thumbnail>
             <ion-img :src="hit.result.header_image_thumbnail_url" />
           </ion-thumbnail>
-          <ion-label>{{hit.result.full_title}}</ion-label>
+          <ion-label class="song-label">{{hit.result.full_title}}</ion-label>
         </ion-item>
       </ion-list>
     </ion-content>
@@ -82,5 +82,8 @@ export default {
 <style scoped>
 ion-list{
   padding-top: 0 !important;
+}
+.song-label{
+  padding-left: 15px;
 }
 </style>

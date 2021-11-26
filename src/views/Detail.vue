@@ -10,17 +10,17 @@
     </ion-header>
 
     <ion-content v-if="loading === false" color="dark" :fullscreen="true">
-      <ion-fab v-if="account.user.likes.includes(song.id)" vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button>
+      <ion-fab v-if="isLiked && account.user !== null" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button @click="unlikeSong({song: {id: song.id, title: song.title, albumArt: song.albumArt}, userId: account.user._id})">
           <ion-icon :icon="heart"></ion-icon>
         </ion-fab-button>
       </ion-fab>
-      <ion-fab v-else vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button @click="likeSong(song.id, account.user._id)">
+      <ion-fab v-else-if="!isLiked && account.user !== null" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button @click="likeSong({song: {id: song.id, title: song.title, albumArt: song.albumArt}, userId: account.user._id})">
           <ion-icon :icon="heartOutline"></ion-icon>
         </ion-fab-button>
       </ion-fab>
-      <img :src="song.albumArt" />
+      <img alt="albumArt" :src="song.albumArt" />
       <ion-item color="dark">
         <ion-label class="song-title" color="primary">
           {{song.title}}
@@ -52,15 +52,30 @@ export default {
       account: (state): any => (state as any).account,
       loading: (state): any => (state as any).genius.loading,
     }),
+    isLiked() {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      //@ts-ignore
+      if(this.account.user !== null) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        //@ts-ignore
+        return this.account.user.likes.filter(like => like.id === this.song.id).length > 0;
+      } else {
+        return false;
+      }
+    }
   },
   methods: {
     // get actions and getters from vuex state model
     ...mapActions("genius", ["getSong"]),
 
-    ...mapActions("account", ["like"]),
+    ...mapActions("account", ["like", "unlike"]),
 
-    likeSong(songId: number, userId: number){
-      this.like({songId: songId, userId: userId})
+    likeSong(data: any){
+      this.like(data)
+    },
+
+    unlikeSong(data: any){
+      this.unlike(data)
     }
   },
   created(){

@@ -10,76 +10,22 @@
     </ion-header>
 
     <ion-content color="dark" :fullscreen="true">
-        <form novalidate>
-            <ion-item color="dark">
-              <ion-label position="floating" color="primary">Username</ion-label>
-              <ion-input
-                  @input="credentials.username = $event.target.value"
-                  :value="credentials.username"
-                  name="username"
-                  type="text"
-                  autocapitalize="off"
-              ></ion-input>
-            </ion-item>
-            <ion-item color="dark">
-              <ion-label position="floating" color="primary">Password</ion-label>
-              <ion-input
-                  @input="credentials.password = $event.target.value"
-                  :value="credentials.password"
-                  name="password"
-                  type="password"
-              ></ion-input>
-            </ion-item>
-          <ion-button @click="doLogin(credentials)" color="secondary" expand="full">Login</ion-button>
-        </form>
+      <HomeTabs></HomeTabs>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonButtons, IonButton, IonLabel, IonItem, IonInput, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import { mapActions } from "vuex";
-import router from "@/router";
+import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import HomeTabs from "@/components/HomeTabs.vue";
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    IonButtons,
-    IonButton,
-    IonLabel,
-    IonItem,
-    IonInput,
-    IonContent,
-    IonHeader,
-    IonMenuButton,
-    IonPage,
-    IonTitle,
-    IonToolbar
-  },
-  data() {
-    return {
-      credentials: {}
-    };
-  },
-  methods: {
-    // get actions and getters from vuex state model
-    ...mapActions("account", ["login"]),
-    // methods for this component
-    async doLogin(credentials: any) {
-      try {
-        const user = await this.login(credentials);
-        if (user === false) {
-          console.log('error');
-        } else {
-          console.log('logged')
-          router.push("search");
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    },
-  }
+    HomeTabs,
+    IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar },
 }
 </script>
 
 <style scoped>
+
 </style>
