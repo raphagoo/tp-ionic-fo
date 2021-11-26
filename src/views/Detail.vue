@@ -31,6 +31,7 @@
           {{song.lyrics}}
         </p>
       </ion-text>
+      <ion-button @click="playAudio()">Play</ion-button>
     </ion-content>
     <ion-content v-else color="dark" :fullscreen="true">
       <ion-spinner color="primary"></ion-spinner>
@@ -42,6 +43,7 @@
 import { IonButtons, IonContent, IonBackButton, IonLabel, IonSpinner, IonItem, IonText, IonHeader, IonPage, IonTitle, IonToolbar, IonFab, IonFabButton, IonIcon } from '@ionic/vue';
 import {mapActions, mapState, useStore} from "vuex";
 import { heartOutline, heart } from 'ionicons/icons';
+import { NativeAudio } from '@ionic-native/native-audio';
 import { useRoute } from 'vue-router';
 export default {
   name: "Detail",
@@ -49,6 +51,7 @@ export default {
   computed: {
     ...mapState({
       song: (state): any => (state as any).genius.song,
+      geniusInfos: (state): any => (state as any).genius.infos,
       account: (state): any => (state as any).account,
       loading: (state): any => (state as any).genius.loading,
     }),
@@ -61,6 +64,17 @@ export default {
         return this.account.user.likes.filter(like => like.id === this.song.id).length > 0;
       } else {
         return false;
+      }
+    },
+    audioPlayer() {
+      if(this.geniusInfos !== null) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        //@ts-ignore
+        return NativeAudio.preloadSimple('uniqueId1', this.geniusInfos.media.find(media => {
+          return media.provider === "spotify"
+        }))
+      } else {
+        return false
       }
     }
   },
@@ -76,6 +90,9 @@ export default {
 
     unlikeSong(data: any){
       this.unlike(data)
+    },
+    playAudio(){
+      NativeAudio.play('uniqueId1');
     }
   },
   created(){

@@ -71,6 +71,7 @@ export default {
           console.log('error');
         } else {
           console.log('logged')
+          credentials = {};
           router.push("login");
         }
       } catch (e) {

@@ -71,6 +71,7 @@ export default {
           console.log('error');
         } else {
           console.log('logged')
+          credentials = {};
           router.push({path: '/search'});
         }
       } catch (e) {
