@@ -40,14 +40,16 @@
 </template>
 
 <script lang="ts">
-import { IonButtons, IonContent, IonBackButton, IonLabel, IonSpinner, IonItem, IonText, IonHeader, IonPage, IonTitle, IonToolbar, IonFab, IonFabButton, IonIcon } from '@ionic/vue';
+import { IonButtons, IonButton, IonContent, IonBackButton, IonLabel, IonSpinner, IonItem, IonText, IonHeader, IonPage, IonTitle, IonToolbar, IonFab, IonFabButton, IonIcon } from '@ionic/vue';
 import {mapActions, mapState, useStore} from "vuex";
 import { heartOutline, heart } from 'ionicons/icons';
-import { NativeAudio } from '@ionic-native/native-audio';
 import { useRoute } from 'vue-router';
+import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
+
+
 export default {
   name: "Detail",
-  components: {IonButtons, IonBackButton, IonLabel, IonItem, IonSpinner, IonContent, IonText, IonHeader, IonPage, IonTitle, IonToolbar, IonFab, IonFabButton, IonIcon },
+  components: {IonButtons, IonButton, IonBackButton, IonLabel, IonItem, IonSpinner, IonContent, IonText, IonHeader, IonPage, IonTitle, IonToolbar, IonFab, IonFabButton, IonIcon },
   computed: {
     ...mapState({
       song: (state): any => (state as any).genius.song,
@@ -66,17 +68,6 @@ export default {
         return false;
       }
     },
-    audioPlayer() {
-      if(this.geniusInfos !== null) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        //@ts-ignore
-        return NativeAudio.preloadSimple('uniqueId1', this.geniusInfos.media.find(media => {
-          return media.provider === "spotify"
-        }))
-      } else {
-        return false
-      }
-    }
   },
   methods: {
     // get actions and getters from vuex state model
@@ -92,7 +83,23 @@ export default {
       this.unlike(data)
     },
     playAudio(){
-      NativeAudio.play('uniqueId1');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      //@ts-ignore
+      const media = this.geniusInfos.media.find(media => {
+        if(media.provider === 'youtube'){
+          return media
+        }
+      });
+
+      const options: StreamingVideoOptions = {
+        successCallback: () => { console.log('Video played') },
+        errorCallback: () => { console.log('Error streaming') },
+        orientation: 'landscape',
+        shouldAutoClose: true,
+        controls: false
+      };
+
+      StreamingMedia.playVideo(media.url, options);
     }
   },
   created(){
