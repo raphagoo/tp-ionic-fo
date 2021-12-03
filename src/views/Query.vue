@@ -11,7 +11,7 @@
 
     <ion-content color="dark" :fullscreen="true">
       <ion-item color="dark">
-        <ion-label position="floating" color="primary">Type a song, artist or album name</ion-label>
+        <ion-label position="floating" color="primary">Type a song, artist or album name..</ion-label>
         <ion-input
             @input="term = $event.target.value"
             :value="term"
@@ -20,7 +20,10 @@
             autocapitalize="off"
         ></ion-input>
       </ion-item>
-      <ion-button @click="doSearch(term)" color="secondary" expand="full">Search</ion-button>
+      <ion-button @click="doSearch(term)" color="secondary" expand="full">
+        <ion-icon slot="start" :icon="searchOutline"></ion-icon>
+        Search
+      </ion-button>
       <ion-list color="dark" v-if="results">
         <ion-item class="item-song" @click="toDetail(hit.result.id)" color="dark" v-for="hit in results.hits" :key="hit.result.id">
           <ion-thumbnail>
@@ -34,7 +37,8 @@
 </template>
 
 <script lang="ts">
-import { IonButtons, IonImg, IonButton, IonList, IonContent, IonHeader, IonItem, IonLabel, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonThumbnail } from '@ionic/vue';
+import { IonIcon, IonButtons, IonImg, IonButton, IonList, IonContent, IonHeader, IonItem, IonLabel, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonThumbnail } from '@ionic/vue';
+import { searchOutline } from "ionicons/icons";
 import {mapActions, mapState} from "vuex";
 import { useRouter } from 'vue-router';
 import router from "@/router";
@@ -47,9 +51,10 @@ export default {
   },
   setup() {
     const router = useRouter();
-    return { router };
+    return { router, searchOutline };
+
   },
-  components: { IonButtons, IonImg, IonButton, IonList, IonContent, IonHeader, IonItem, IonLabel, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonThumbnail },
+  components: { IonIcon, IonButtons, IonImg, IonButton, IonList, IonContent, IonHeader, IonItem, IonLabel, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonThumbnail },
   data() {
     return {
       term: ''

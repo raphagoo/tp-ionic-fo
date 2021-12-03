@@ -2,7 +2,7 @@ const config = {
     logLevel: 'debug',
     baseHref: "/",
     api: {
-        baseUrl: "https://tp-ionic-api.herokuapp.com/",
+        baseUrl: "http://localhost:3000",
     },
 }
 

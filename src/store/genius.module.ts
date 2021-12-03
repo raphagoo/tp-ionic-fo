@@ -42,6 +42,24 @@ const actions = {
                 );
         })
     },
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    stream({dispatch, commit}: {dispatch: Dispatch; commit: Commit}, songId: number){
+        return new Promise((resolve, reject) => {
+            commit('streamRequest', songId);
+            api.get('/stream/' + songId, { headers:{"Content-Type": "application/json"}})
+                .then(
+                    response => {
+                        commit('streamSuccess', response.data)
+                        resolve(response)
+                    },
+                    error => {
+                        log.info('Erreur : ', error)
+                        reject(error)
+                    }
+                );
+        })
+    },
 }
 
 
@@ -61,6 +79,12 @@ const mutations = {
         state.song = data.song;
         state.infos = data.geniusInfos.response.song;
         state.loading = false;
+    },
+    streamRequest(){
+        log.info('account.module.stream.request');
+    },
+    streamSuccess(){
+        log.info('account.module.stream.success');
     }
 }
 

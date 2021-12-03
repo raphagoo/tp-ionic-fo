@@ -29,14 +29,18 @@
           ></ion-input>
         </ion-item>
         <ion-button @click="doLogin(credentials)" color="secondary" expand="full">Login</ion-button>
-        <ion-button @click="authent()" color="secondary" expand="full">Authent</ion-button>
+        <ion-button @click="authent()" color="secondary" expand="full">
+          <ion-icon slot="start" :icon="fingerPrintOutline"></ion-icon>
+          fingerprint
+        </ion-button>
       </form>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonButton, IonButtons, IonTitle, IonContent, IonToolbar, IonHeader, IonLabel, IonItem, IonInput, IonPage, IonMenuButton } from '@ionic/vue';
+import { IonIcon, IonButton, IonButtons, IonTitle, IonContent, IonToolbar, IonHeader, IonLabel, IonItem, IonInput, IonPage, IonMenuButton } from '@ionic/vue';
+import { fingerPrintOutline } from "ionicons/icons";
 import { mapActions } from "vuex";
 import router from "@/router";
 import { KeychainTouchId } from "@ionic-native/keychain-touch-id";
@@ -44,6 +48,7 @@ const secretKey = 'mySuperSecrett';
 export default {
   name: "Login",
   components: {
+    IonIcon,
     IonButton,
     IonButtons,
     IonTitle,
@@ -56,6 +61,11 @@ export default {
     IonPage,
     IonMenuButton
   },
+  setup() {
+    return {
+      fingerPrintOutline
+    }
+  },
   data() {
     return {
       credentials: {username: '', password: ''}
@@ -66,7 +76,6 @@ export default {
     ...mapActions("account", ["login"]),
     // methods for this component
     async doLogin(credentials: any) {
-      console.log(credentials)
       try {
         const user = await this.login(credentials);
         if (user === false) {
@@ -74,7 +83,7 @@ export default {
         } else {
           console.log('logged')
           KeychainTouchId.has(secretKey).then(() => {
-            KeychainTouchId.delete(secretKey)
+            console.log('success')
           }).catch(() => {
             KeychainTouchId.save(secretKey, credentials.password, true).then(() => {
               console.log('success')
@@ -83,9 +92,6 @@ export default {
           .catch(error => {
             alert('Could not store password : ' + error)
           })
-          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-          //@ts-ignore
-          this.credentials.password = '';
           router.push({path: '/search'});
         }
       } catch (e) {

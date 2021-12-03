@@ -26,12 +26,18 @@
           {{song.title}}
         </ion-label>
       </ion-item>
+      <ion-button @click="shareSong()">
+        <ion-icon slot="start" :icon="shareSocialOutline"></ion-icon>
+        Share
+      </ion-button>
+      <ion-button @click="streamSong()">
+        Listen
+      </ion-button>
       <ion-text color="primary">
         <p class="song-lyrics">
           {{song.lyrics}}
         </p>
       </ion-text>
-      <ion-button @click="playAudio()">Play</ion-button>
     </ion-content>
     <ion-content v-else color="dark" :fullscreen="true">
       <ion-spinner color="primary"></ion-spinner>
@@ -42,9 +48,10 @@
 <script lang="ts">
 import { IonButtons, IonButton, IonContent, IonBackButton, IonLabel, IonSpinner, IonItem, IonText, IonHeader, IonPage, IonTitle, IonToolbar, IonFab, IonFabButton, IonIcon } from '@ionic/vue';
 import {mapActions, mapState, useStore} from "vuex";
-import { heartOutline, heart } from 'ionicons/icons';
+import { heartOutline, heart, shareSocialOutline } from 'ionicons/icons';
 import { useRoute } from 'vue-router';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
+import { SocialSharing } from "@ionic-native/social-sharing";
 
 
 export default {
@@ -67,16 +74,36 @@ export default {
       } else {
         return false;
       }
-    },
+    }
   },
   methods: {
     // get actions and getters from vuex state model
-    ...mapActions("genius", ["getSong"]),
+    ...mapActions("genius", ["getSong", "stream"]),
 
     ...mapActions("account", ["like", "unlike"]),
 
     likeSong(data: any){
       this.like(data)
+    },
+
+    shareSong() {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      //@ts-ignore
+      SocialSharing.share('https://tp-ionic-api.herokuapp.com/detail/' + this.song.id, 'Song')
+    },
+
+    streamSong() {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      //@ts-ignore
+      const media = this.geniusInfos.media.find(media => {
+        if(media.provider === 'spotify'){
+          return media
+        }
+      });
+      const mediaArray = media.native_uri.split(':')
+      const spotifyId = mediaArray[2];
+      console.log(spotifyId)
+      this.stream(spotifyId)
     },
 
     unlikeSong(data: any){
@@ -96,7 +123,7 @@ export default {
         errorCallback: () => { console.log('Error streaming') },
         orientation: 'landscape',
         shouldAutoClose: true,
-        controls: false
+        controls: true
       };
 
       StreamingMedia.playVideo(media.url, options);
@@ -111,7 +138,8 @@ export default {
   setup() {
     return {
       heartOutline,
-      heart
+      heart,
+      shareSocialOutline
     }
   }
 }

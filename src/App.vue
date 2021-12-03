@@ -31,9 +31,10 @@
 <script lang="ts">
 import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet} from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import { logInOutline, logInSharp, logOutOutline, logOutSharp, heartOutline, heartSharp, searchOutline, searchSharp, personCircleOutline, personCircleSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import {mapState} from "vuex";
+import { App, URLOpenListenerEvent } from '@capacitor/app';
 
 
 export default defineComponent({
@@ -101,6 +102,20 @@ export default defineComponent({
     ];
 
     const route = useRoute();
+    const router = useRouter();
+
+    App.addListener('appUrlOpen', function (event: URLOpenListenerEvent) {
+      // Example url: https://beerswift.app/tabs/tabs2
+      // slug = /tabs/tabs2
+      const slug = event.url.split('.com').pop();
+
+      // We only push to the route if there is a slug present
+      if (slug) {
+        router.push({
+          path: slug,
+        });
+      }
+    });
 
     return {
       selectedIndex,
