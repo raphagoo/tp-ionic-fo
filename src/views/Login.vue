@@ -81,7 +81,6 @@ export default {
         if (user === false) {
           console.log('error');
         } else {
-          console.log('logged')
           KeychainTouchId.has(secretKey).then(() => {
             console.log('success')
           }).catch(() => {

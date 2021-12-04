@@ -26,13 +26,25 @@
           {{song.title}}
         </ion-label>
       </ion-item>
-      <ion-button @click="shareSong()">
-        <ion-icon slot="start" :icon="shareSocialOutline"></ion-icon>
-        Share
-      </ion-button>
-      <ion-button @click="streamSong()">
-        Listen
-      </ion-button>
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-text-center" color="dark">
+            <a class="icons-col" :href="media.url" v-for="media in geniusInfos.media" :key="media.provider">
+              <ion-icon size="large" v-if="media.provider === 'soundcloud'" :icon="logoSoundcloud"></ion-icon>
+              <ion-icon size="large" v-if="media.provider === 'youtube'" :icon="logoYoutube"></ion-icon>
+              <ion-icon size="large" v-if="media.provider === 'spotify'" :icon="filterCircleOutline"></ion-icon>
+            </a>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-text-center">
+            <ion-button @click="shareSong()">
+              <ion-icon slot="start" :icon="shareSocialOutline"></ion-icon>
+              Share
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
       <ion-text color="primary">
         <p class="song-lyrics">
           {{song.lyrics}}
@@ -46,17 +58,16 @@
 </template>
 
 <script lang="ts">
-import { IonButtons, IonButton, IonContent, IonBackButton, IonLabel, IonSpinner, IonItem, IonText, IonHeader, IonPage, IonTitle, IonToolbar, IonFab, IonFabButton, IonIcon } from '@ionic/vue';
+import { IonButtons, IonGrid, IonCol, IonRow, IonButton, IonContent, IonBackButton, IonLabel, IonSpinner, IonItem, IonText, IonHeader, IonPage, IonTitle, IonToolbar, IonFab, IonFabButton, IonIcon } from '@ionic/vue';
 import {mapActions, mapState, useStore} from "vuex";
-import { heartOutline, heart, shareSocialOutline } from 'ionicons/icons';
+import { heartOutline, heart, shareSocialOutline, logoSoundcloud, logoYoutube, filterCircleOutline } from 'ionicons/icons';
 import { useRoute } from 'vue-router';
-import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media';
 import { SocialSharing } from "@ionic-native/social-sharing";
 
 
 export default {
   name: "Detail",
-  components: {IonButtons, IonButton, IonBackButton, IonLabel, IonItem, IonSpinner, IonContent, IonText, IonHeader, IonPage, IonTitle, IonToolbar, IonFab, IonFabButton, IonIcon },
+  components: {IonButtons, IonGrid, IonCol, IonRow, IonButton, IonBackButton, IonLabel, IonItem, IonSpinner, IonContent, IonText, IonHeader, IonPage, IonTitle, IonToolbar, IonFab, IonFabButton, IonIcon },
   computed: {
     ...mapState({
       song: (state): any => (state as any).genius.song,
@@ -76,6 +87,13 @@ export default {
       }
     }
   },
+  data(){
+    return {
+      spotifyUrl: null,
+      youtubeUrl: null,
+      soundcloudUrl: null
+    }
+  },
   methods: {
     // get actions and getters from vuex state model
     ...mapActions("genius", ["getSong", "stream"]),
@@ -92,54 +110,42 @@ export default {
       SocialSharing.share('https://tp-ionic-api.herokuapp.com/detail/' + this.song.id, 'Song')
     },
 
-    streamSong() {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      //@ts-ignore
-      const media = this.geniusInfos.media.find(media => {
-        if(media.provider === 'spotify'){
-          return media
-        }
-      });
-      const mediaArray = media.native_uri.split(':')
-      const spotifyId = mediaArray[2];
-      console.log(spotifyId)
-      this.stream(spotifyId)
-    },
-
     unlikeSong(data: any){
       this.unlike(data)
     },
-    playAudio(){
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      //@ts-ignore
-      const media = this.geniusInfos.media.find(media => {
-        if(media.provider === 'youtube'){
-          return media
-        }
-      });
-
-      const options: StreamingVideoOptions = {
-        successCallback: () => { console.log('Video played') },
-        errorCallback: () => { console.log('Error streaming') },
-        orientation: 'landscape',
-        shouldAutoClose: true,
-        controls: true
-      };
-
-      StreamingMedia.playVideo(media.url, options);
-    }
   },
   created(){
     const route = useRoute();
     const store = useStore();
     store.state.genius.loading = true;
-    store.dispatch('genius/getSong', route.params.songId);
+    store.dispatch('genius/getSong', route.params.songId).then(() => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      //@ts-ignore
+      this.geniusInfos.media.find(media => {
+        if(media.provider === 'spotify'){
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          //@ts-ignore
+          this.spotifyUrl = media.url
+        } else if(media.provider === 'soundcloud') {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          //@ts-ignore
+          this.soundcloudUrl = media.url
+        } else if(media.provider === 'youtube') {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          //@ts-ignore
+          this.youtubeUrl = media.url
+        }
+      });
+    })
   },
   setup() {
     return {
       heartOutline,
       heart,
-      shareSocialOutline
+      shareSocialOutline,
+      logoSoundcloud,
+      logoYoutube,
+      filterCircleOutline
     }
   }
 }
@@ -164,5 +170,8 @@ ion-spinner {
   left: 0;
   bottom: 0;
   right: 0;
+}
+.icons-col{
+  padding: 0.5em;
 }
 </style>

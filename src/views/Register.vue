@@ -31,18 +31,25 @@
           ></ion-input>
         </ion-item>
         <ion-button @click="doRegister(credentials)" color="secondary" expand="full">Register</ion-button>
+        <ion-toast
+            :is-open="showToast"
+            message="Successfully registered"
+            :duration="2000"
+        >
+        </ion-toast>
       </form>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonButton, IonButtons, IonLabel, IonItem, IonInput, IonHeader, IonTitle, IonToolbar, IonContent, IonPage, IonMenuButton } from '@ionic/vue';
+import { IonToast, IonButton, IonButtons, IonLabel, IonItem, IonInput, IonHeader, IonTitle, IonToolbar, IonContent, IonPage, IonMenuButton } from '@ionic/vue';
 import { mapActions } from "vuex";
 import router from "@/router";
 export default {
   name: "Register",
   components: {
+    IonToast,
     IonButton,
     IonButtons,
     IonLabel,
@@ -57,28 +64,28 @@ export default {
   },
   data() {
     return {
-      credentials: {}
+      credentials: {},
+      showToast: false
     };
   },
   methods: {
     // get actions and getters from vuex state model
     ...mapActions("account", ["register"]),
     // methods for this component
-    async doRegister(credentials: any) {
-      try {
-        const user = await this.register(credentials);
-        if (user === false) {
-          console.log('error');
-        } else {
+    doRegister(credentials: any) {
+        this.register(credentials).then(() => {
           console.log('logged')
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          //@ts-ignore
+          this.showToast = true
           credentials = {};
           router.push("login");
-        }
-      } catch (e) {
-        console.log(e)
+        }).catch(() => {
+          console.log('error')
+        })
       }
-    },
-  }
+
+  },
 }
 </script>
 

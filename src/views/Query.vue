@@ -24,7 +24,7 @@
         <ion-icon slot="start" :icon="searchOutline"></ion-icon>
         Search
       </ion-button>
-      <ion-list color="dark" v-if="results">
+      <ion-list color="dark" v-if="results.hits">
         <ion-item class="item-song" @click="toDetail(hit.result.id)" color="dark" v-for="hit in results.hits" :key="hit.result.id">
           <ion-thumbnail>
             <ion-img :src="hit.result.header_image_thumbnail_url" />
@@ -32,12 +32,30 @@
           <ion-label class="song-label">{{hit.result.full_title}}</ion-label>
         </ion-item>
       </ion-list>
+      <ion-list color="dark" v-if="results.loading === true">
+          <ion-item v-for="n in 7" :key="n.id" color="dark">
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <h3>
+                <ion-skeleton-text style="width: 80%"></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonIcon, IonButtons, IonImg, IonButton, IonList, IonContent, IonHeader, IonItem, IonLabel, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonThumbnail } from '@ionic/vue';
+import { IonIcon, IonSkeletonText, IonButtons, IonImg, IonButton, IonList, IonContent, IonHeader, IonItem, IonLabel, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonThumbnail } from '@ionic/vue';
 import { searchOutline } from "ionicons/icons";
 import {mapActions, mapState} from "vuex";
 import { useRouter } from 'vue-router';
@@ -54,7 +72,7 @@ export default {
     return { router, searchOutline };
 
   },
-  components: { IonIcon, IonButtons, IonImg, IonButton, IonList, IonContent, IonHeader, IonItem, IonLabel, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonThumbnail },
+  components: { IonIcon, IonButtons, IonSkeletonText, IonImg, IonButton, IonList, IonContent, IonHeader, IonItem, IonLabel, IonInput, IonMenuButton, IonPage, IonTitle, IonToolbar, IonThumbnail },
   data() {
     return {
       term: ''
@@ -87,6 +105,7 @@ export default {
 <style scoped>
 ion-list{
   padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 .song-label{
   padding-left: 15px;

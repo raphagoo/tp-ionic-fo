@@ -67,12 +67,6 @@ export default defineComponent({
         mdIcon: searchSharp
       },
       {
-        title: 'Profile',
-        url: '/profile',
-        iosIcon: personCircleOutline,
-        mdIcon: personCircleSharp
-      },
-      {
         title: 'Liked',
         url: '/liked',
         iosIcon: heartOutline,
@@ -89,7 +83,7 @@ export default defineComponent({
     const appPages = [
       {
         title: 'Login',
-        url: '/login',
+        url: '/home/login',
         iosIcon: logInOutline,
         mdIcon: logInSharp
       },

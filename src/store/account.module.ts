@@ -37,6 +37,7 @@ const actions = {
                 .then(
                     response => {
                         commit('registerSuccess', response.data.user)
+                        resolve(response)
                     },
                     error => {
                         log.info('Erreur : ', error)
@@ -49,6 +50,7 @@ const actions = {
     logout({commit}: {commit: Commit}){
         console.log('test')
         sessionStorage.removeItem('user');
+        sessionStorage.removeItem('token');
         commit('logoutSuccess')
     },
 

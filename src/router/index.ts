@@ -81,4 +81,17 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  // redirect to login page if not logged in and trying to access a restricted page
+  const privatePages = ['/liked', '/profile'];
+  const authRequired = privatePages.includes(to.path);
+  const loggedIn = sessionStorage.getItem('token');
+
+  if (authRequired && !loggedIn) {
+    return next('/home');
+  }
+
+  next();
+});
+
 export default router

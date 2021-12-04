@@ -2,9 +2,9 @@ import api from '../interfaces/apiInterface';
 import { default as log } from '../interfaces/consoleLogger';
 import {Dispatch, Commit} from 'vuex';
 
-type stateType = {search: {}; song: {}; infos: {}; loading: boolean};
+type stateType = {search: {loading: boolean; hits: Array<any>}; song: {}; infos: {}; loading: boolean};
 
-const state = {search: {}, song: {}, infos: {}, loading: true};
+const state = {search: {loading: false, hits: []}, song: {}, infos: {}, loading: true};
 
 const actions = {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -64,11 +64,14 @@ const actions = {
 
 
 const mutations = {
-    searchRequest(){
+    searchRequest(state: stateType){
         log.info('account.module.search.request');
+        state.search.loading = true;
+        state.search.hits = [];
     },
     searchSuccess(state: stateType, data: any){
         log.info('account.module.search.success');
+        state.search.loading = false
         state.search = data.response;
     },
     songRequest(){
@@ -80,12 +83,6 @@ const mutations = {
         state.infos = data.geniusInfos.response.song;
         state.loading = false;
     },
-    streamRequest(){
-        log.info('account.module.stream.request');
-    },
-    streamSuccess(){
-        log.info('account.module.stream.success');
-    }
 }
 
 export const genius = {
