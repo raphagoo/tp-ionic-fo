@@ -10,6 +10,10 @@
     </ion-header>
 
     <ion-content color="dark" :fullscreen="true">
+      <ion-loading :is-open="showLoading"
+                   message="Please wait..."
+      >
+      </ion-loading>
       <form novalidate>
         <ion-item color="dark">
           <ion-label position="floating" color="primary">Username</ion-label>
@@ -43,12 +47,13 @@
 </template>
 
 <script lang="ts">
-import { IonToast, IonButton, IonButtons, IonLabel, IonItem, IonInput, IonHeader, IonTitle, IonToolbar, IonContent, IonPage, IonMenuButton } from '@ionic/vue';
+import { IonLoading, IonToast, IonButton, IonButtons, IonLabel, IonItem, IonInput, IonHeader, IonTitle, IonToolbar, IonContent, IonPage, IonMenuButton } from '@ionic/vue';
 import { mapActions } from "vuex";
 import router from "@/router";
 export default {
   name: "Register",
   components: {
+    IonLoading,
     IonToast,
     IonButton,
     IonButtons,
@@ -65,7 +70,8 @@ export default {
   data() {
     return {
       credentials: {},
-      showToast: false
+      showToast: false,
+      showLoading: false
     };
   },
   methods: {
@@ -73,7 +79,13 @@ export default {
     ...mapActions("account", ["register"]),
     // methods for this component
     doRegister(credentials: any) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      //@ts-ignore
+        this.showLoading = true
         this.register(credentials).then(() => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          //@ts-ignore
+          this.showLoading = false
           console.log('logged')
           // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           //@ts-ignore

@@ -10,6 +10,10 @@
     </ion-header>
 
     <ion-content color="dark" :fullscreen="true">
+      <ion-loading :is-open="showLoading"
+                   message="Logging in..."
+                   >
+      </ion-loading>
       <form novalidate>
         <ion-item color="dark">
           <ion-label position="floating" color="primary">Username</ion-label>
@@ -39,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { IonIcon, IonButton, IonButtons, IonTitle, IonContent, IonToolbar, IonHeader, IonLabel, IonItem, IonInput, IonPage, IonMenuButton } from '@ionic/vue';
+import { IonIcon, IonLoading, IonButton, IonButtons, IonTitle, IonContent, IonToolbar, IonHeader, IonLabel, IonItem, IonInput, IonPage, IonMenuButton } from '@ionic/vue';
 import { fingerPrintOutline } from "ionicons/icons";
 import { mapActions } from "vuex";
 import router from "@/router";
@@ -49,6 +53,7 @@ export default {
   name: "Login",
   components: {
     IonIcon,
+    IonLoading,
     IonButton,
     IonButtons,
     IonTitle,
@@ -68,7 +73,8 @@ export default {
   },
   data() {
     return {
-      credentials: {username: '', password: ''}
+      credentials: {username: '', password: ''},
+      showLoading: false
     };
   },
   methods: {
@@ -76,11 +82,20 @@ export default {
     ...mapActions("account", ["login"]),
     // methods for this component
     async doLogin(credentials: any) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      //@ts-ignore
+      this.showLoading = true
       try {
         const user = await this.login(credentials);
         if (user === false) {
-          console.log('error');
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          //@ts-ignore
+          this.showLoading = false;
+          console.log('error')
         } else {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          //@ts-ignore
+          this.showLoading = false
           KeychainTouchId.has(secretKey).then(() => {
             console.log('success')
           }).catch(() => {

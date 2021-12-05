@@ -29,7 +29,7 @@
       <ion-grid>
         <ion-row>
           <ion-col class="ion-text-center" color="dark">
-            <a class="icons-col" :href="media.url" v-for="media in geniusInfos.media" :key="media.provider">
+            <a class="icons-col" v-for="media in geniusInfos.media" :key="media.provider">
               <ion-icon size="large" v-if="media.provider === 'soundcloud'" :icon="logoSoundcloud"></ion-icon>
               <ion-icon size="large" v-if="media.provider === 'youtube'" :icon="logoYoutube"></ion-icon>
               <ion-icon size="large" v-if="media.provider === 'spotify'" :icon="filterCircleOutline"></ion-icon>
@@ -107,7 +107,7 @@ export default {
     shareSong() {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       //@ts-ignore
-      SocialSharing.share('https://tp-ionic-api.herokuapp.com/detail/' + this.song.id, 'Song')
+      SocialSharing.share('https://tp-ionic-api.herokuapp.com/detail/' + this.song.id, 'Checkout this song\'s lyrics !')
     },
 
     unlikeSong(data: any){
