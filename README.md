@@ -3,7 +3,19 @@
   <img alt="Version" src="https://img.shields.io/badge/version-0.0.1-blue.svg?cacheSeconds=2592000" />
 </p>
 
-> Tp Ionic : Documentation :
+> Tp Ionic - How to use : https://github.com/raphagoo/tp-ionic-fo/wiki/Wiki
+
+## Technologies
+
+Vue.JS + Node.JS + Genius API
+
+## Native functionnalities
+
+- Keychain fingerprint
+
+- Social Sharing
+
+- ~~Audio/Streaming~~ Spotify and YouTube made it too hard 😔
 
 ## Install
 
