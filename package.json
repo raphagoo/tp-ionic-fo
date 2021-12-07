@@ -22,7 +22,7 @@
     "@ionic-native/keychain-touch-id": "^5.36.0",
     "@ionic-native/social-sharing": "^5.36.0",
     "@ionic/vue": "^5.9.2",
-    "@ionic/vue-router": "^5.4.0",
+    "@ionic/vue-router": "^5.9.2",
     "axios": "^0.24.0",
     "cordova-plugin-fingerprint-aio": "^4.0.2",
     "cordova-plugin-keychain-touch-id": "^3.2.1",
