@@ -1,6 +1,7 @@
 <h1 align="center">Welcome to tp-ionic 👋</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-0.0.1-blue.svg?cacheSeconds=2592000" />
+  <img alt="Dependencies" src="https://img.shields.io/depfu/raphagoo/tp-ionic-fo" />
 </p>
 
 > Tp Ionic - How to use : https://github.com/raphagoo/tp-ionic-fo/wiki/Wiki
