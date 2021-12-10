@@ -10,10 +10,10 @@ const api = axios.create({
 api.interceptors.request.use(
     config => {
         $log.info('api.interceptors.request')
-        if(sessionStorage.getItem('token') !== null) {
+        if(localStorage.getItem('token') !== null) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
             // @ts-ignore
-            config.headers.Authorization = 'Bearer ' + sessionStorage.getItem('token')
+            config.headers.Authorization = 'Bearer ' + localStorage.getItem('token')
         }
         return config
     },
@@ -36,14 +36,14 @@ api.interceptors.response.use(function (response) {
             confirmButtonText: "Yes"
         }).then((result) => {
             if(result.value) {
-                router.push('/login')
+                router.push('/home/login')
             }
         })
     }
     else if(403 === error.response.status){
         Swal.fire({
-            title: "Unauthorized",
-            text: " This account isn't authorized to access the backoffice",
+            title: "Forbidden",
+            text: "This username already exists",
             icon: "error",
         })
     }

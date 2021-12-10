@@ -84,11 +84,15 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
   const privatePages = ['/liked', '/profile'];
+  const publicPages = ['/home/login', '/home/register']
   const authRequired = privatePages.includes(to.path);
-  const loggedIn = sessionStorage.getItem('token');
+  const noAuth = publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem('token');
 
   if (authRequired && !loggedIn) {
     return next('/home');
+  } else if(loggedIn && noAuth){
+    return next('/search')
   }
 
   next();

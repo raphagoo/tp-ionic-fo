@@ -16,7 +16,7 @@ const actions = {
                     response => {
                         commit('searchSuccess', response.data)
                         resolve(response)
-                    },
+                    }).catch(
                     error => {
                         log.info('Erreur : ', error)
                         reject(error)
@@ -34,7 +34,7 @@ const actions = {
                     response => {
                         commit('songSuccess', response.data);
                         resolve(response);
-                    },
+                    }).catch(
                     error => {
                         log.info('Erreur : ', error);
                         reject(error);
@@ -52,7 +52,7 @@ const actions = {
                     response => {
                         commit('streamSuccess', response.data)
                         resolve(response)
-                    },
+                    }).catch(
                     error => {
                         log.info('Erreur : ', error)
                         reject(error)

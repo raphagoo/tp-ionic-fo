@@ -60,6 +60,7 @@ import { searchOutline } from "ionicons/icons";
 import {mapActions, mapState} from "vuex";
 import { useRouter } from 'vue-router';
 import router from "@/router";
+import consoleLogger from "@/interfaces/consoleLogger";
 export default {
   name: "Query",
   computed: {
@@ -84,11 +85,10 @@ export default {
     // methods for this component
     async doSearch(term: string) {
       try {
-        const user = await this.search(term);
-        if (user === false) {
-          console.log('error');
+        const results = await this.search(term);
+        if (results === false) {
+          consoleLogger.error('erreur')
         } else {
-          console.log('logged')
           router.push("search");
         }
       } catch (e) {

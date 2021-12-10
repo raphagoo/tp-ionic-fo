@@ -48,6 +48,7 @@ import { fingerPrintOutline } from "ionicons/icons";
 import { mapActions } from "vuex";
 import router from "@/router";
 import { KeychainTouchId } from "@ionic-native/keychain-touch-id";
+import consoleLogger from "@/interfaces/consoleLogger";
 const secretKey = 'mySuperSecrett';
 export default {
   name: "Login",
@@ -91,16 +92,15 @@ export default {
           // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           //@ts-ignore
           this.showLoading = false;
-          console.log('error')
         } else {
           // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           //@ts-ignore
           this.showLoading = false
           KeychainTouchId.has(secretKey).then(() => {
-            console.log('success')
+            consoleLogger.info('keychain exists')
           }).catch(() => {
             KeychainTouchId.save(secretKey, credentials.password, true).then(() => {
-              console.log('success')
+              consoleLogger.info('success')
             })
           })
           .catch(error => {
@@ -109,7 +109,7 @@ export default {
           router.push({path: '/search'});
         }
       } catch (e) {
-        console.log(e)
+        consoleLogger.error(e)
       }
     },
     authent() {
@@ -119,6 +119,9 @@ export default {
             // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
             //@ts-ignore
             this.credentials.password = password
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            //@ts-ignore
+            this.doLogin(this.credentials)
           })
         })
         .catch(error => {

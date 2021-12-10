@@ -86,14 +86,15 @@ export default {
           // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           //@ts-ignore
           this.showLoading = false
-          console.log('logged')
           // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           //@ts-ignore
           this.showToast = true
           credentials = {};
           router.push("login");
         }).catch(() => {
-          console.log('error')
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          //@ts-ignore
+          this.showLoading = false
         })
       }
 

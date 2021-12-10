@@ -3,7 +3,7 @@ import { default as log } from '../interfaces/consoleLogger'
 import { User } from '@/types';
 import {Dispatch, Commit} from 'vuex';
 
-const token = sessionStorage.getItem('token');
+const token = localStorage.getItem('token');
 const state = token
     ? { status: { loggedIn: true }, token, user: {} }
     : { status: {}, user: null };
@@ -17,10 +17,10 @@ const actions = {
             api.post('/user/login', user, { headers:{"Content-Type": "application/json"}})
                 .then(
                     response => {
-                        sessionStorage.setItem('token', response.data.token)
+                        localStorage.setItem('token', response.data.token)
                         commit('loginSuccess', response.data.user)
                         resolve(response)
-                    },
+                    }).catch(
                     error => {
                         log.info('Erreur : ', error)
                         reject(error)
@@ -38,19 +38,17 @@ const actions = {
                     response => {
                         commit('registerSuccess', response.data.user)
                         resolve(response)
-                    },
-                    error => {
-                        log.info('Erreur : ', error)
-                        reject(error)
                     }
-                );
+                ).catch(error => {
+                    log.info('Erreur : ', error)
+                    reject(error)
+                })
         })
     },
 
     logout({commit}: {commit: Commit}){
-        console.log('test')
-        sessionStorage.removeItem('user');
-        sessionStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
         commit('logoutSuccess')
     },
 
@@ -63,7 +61,7 @@ const actions = {
                     response => {
                         commit('likeSongSuccess', response.data)
                         resolve(response)
-                    },
+                    }).catch(
                     error => {
                         log.info('Erreur : ', error)
                         reject(error)
@@ -81,7 +79,7 @@ const actions = {
                     response => {
                         commit('unlikeSongSuccess', response.data)
                         resolve(response)
-                    },
+                    }).catch(
                     error => {
                         log.info('Erreur : ', error)
                         reject(error)
