@@ -9,8 +9,11 @@
 ## Technologies
 
 Vue.JS + Node.JS + Genius API
+
 API Repo : https://github.com/raphagoo/tp-ionic-api
+
 API is hosted on heroku at : https://tp-ionic-api.herokuapp.com/
+
 
 ## Native functionnalities
 
