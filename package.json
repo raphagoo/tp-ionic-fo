@@ -31,7 +31,7 @@
     "es6-promise-plugin": "^4.2.2",
     "sweetalert2": "^11.3.0",
     "vue": "^3.2.24",
-    "vue-router": "^4.0.0-0",
+    "vue-router": "^4.0.16",
     "vuex": "^4.0.2",
     "vuex-persistedstate": "^4.1.0"
   },
